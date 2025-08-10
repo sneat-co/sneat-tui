@@ -2,46 +2,27 @@ package sneatui
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
+	"strings"
 	"testing"
 )
 
-func TestInitialModel_ReturnsMenuUnassigned(t *testing.T) {
+func TestInitialModel_ReturnsAppModel_ShowsUnsignedMenu(t *testing.T) {
 	m := InitialModel()
-	// Ensure the returned model is our menuUnassigned
-	mu, ok := m.(menuUnassigned)
+	am, ok := m.(appModel)
 	if !ok {
-		// In case the model is a pointer in future, try that too for a clearer error
-		if _, okp := m.(*menuUnassigned); okp {
-			t.Fatalf("InitialModel returned *menuUnassigned, expected value type menuUnassigned (update tests if implementation changed)")
-		}
-		t.Fatalf("InitialModel returned %T, want menuUnassigned", m)
+		t.Fatalf("InitialModel returned %T, want appModel", m)
 	}
-
-	if mu.list.Title != "Sneat.app - main menu" {
-		t.Fatalf("list title = %q, want %q", mu.list.Title, "Sneat.app - main menu")
-	}
-
-	// Sanity check that view renders something
-	view := mu.View()
-	if view == "" {
-		t.Fatalf("View() returned empty string")
+	view := am.View()
+	if !strings.Contains(view, "Sneat.app - main menu") {
+		t.Fatalf("initial view missing main menu title; view=\n%s", view)
 	}
 }
 
-func TestMenuUnassigned_InitReturnsNil(t *testing.T) {
-	m := InitialModel().(menuUnassigned)
-	if cmd := m.Init(); cmd != nil {
-		// execute to show behavior if non-nil
-		_ = cmd()
-		t.Fatalf("Init() = %v, want nil", cmd)
-	}
-}
-
-func TestMenuUnassigned_Update_CtrlCQuits(t *testing.T) {
-	m := InitialModel().(menuUnassigned)
+func TestApp_Unsigned_CtrlCQuits(t *testing.T) {
+	m := InitialModel().(appModel)
 	model, cmd := m.Update(tea.KeyMsg{Type: tea.KeyCtrlC})
-	if _, ok := model.(menuUnassigned); !ok {
-		t.Fatalf("Update returned model %T, want menuUnassigned", model)
+	if _, ok := model.(appModel); !ok {
+		t.Fatalf("Update returned model %T, want appModel", model)
 	}
 	if cmd == nil {
 		t.Fatalf("cmd is nil, want tea.Quit")
@@ -52,20 +33,18 @@ func TestMenuUnassigned_Update_CtrlCQuits(t *testing.T) {
 	}
 }
 
-func TestMenuUnassigned_Update_WindowSizeSetsListSize(t *testing.T) {
-	m := InitialModel().(menuUnassigned)
+func TestApp_Unsigned_WindowSizeSetsListSize(t *testing.T) {
+	m := InitialModel().(appModel)
 	// initial sizes
-	w0, h0 := m.list.Width(), m.list.Height()
+	w0, h0 := m.unsigned.list.Width(), m.unsigned.list.Height()
 
 	hMargin, vMargin := docStyle.GetFrameSize()
 	msg := tea.WindowSizeMsg{Width: 100, Height: 40}
-	model, cmd := m.Update(msg)
-	_ = cmd // may be nil; we're focused on size changes
-
-	mu := model.(menuUnassigned)
+	model, _ := m.Update(msg)
+	am := model.(appModel)
 	wantW := msg.Width - hMargin
 	wantH := msg.Height - vMargin
-	if mu.list.Width() != wantW || mu.list.Height() != wantH {
-		t.Fatalf("list size = (%d,%d), want (%d,%d); initial was (%d,%d)", mu.list.Width(), mu.list.Height(), wantW, wantH, w0, h0)
+	if am.unsigned.list.Width() != wantW || am.unsigned.list.Height() != wantH {
+		t.Fatalf("list size = (%d,%d), want (%d,%d); initial was (%d,%d)", am.unsigned.list.Width(), am.unsigned.list.Height(), wantW, wantH, w0, h0)
 	}
 }

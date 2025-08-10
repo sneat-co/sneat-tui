@@ -16,7 +16,7 @@ func (i item) Title() string       { return i.title }
 func (i item) Description() string { return i.desc }
 func (i item) FilterValue() string { return i.title }
 
-type menuUnassigned struct {
+type menuUnsigned struct {
 	list list.Model
 }
 
@@ -25,22 +25,53 @@ func newMenuUnassigned() tea.Model {
 		item{title: "Sign-in", desc: "Authorize to get access to your data"},
 		item{title: "About", desc: "Learn about the Sneat.app"},
 	}
-	m := menuUnassigned{
-		list: list.New(items, list.NewDefaultDelegate(), 0, 0),
+	// Provide safe default size so items render even before any WindowSizeMsg arrives.
+	// Typical terminal is at least 80x24; subtract docStyle margins to size the list.
+	h, v := docStyle.GetFrameSize()
+	defaultW := 80 - h
+	defaultH := 24 - v
+	if defaultW < 20 {
+		defaultW = 20
 	}
+	if defaultH < 5 {
+		defaultH = 5
+	}
+	m := menuUnsigned{
+		list: list.New(items, list.NewDefaultDelegate(), defaultW, defaultH),
+	}
+	// Ensure title is always shown and filter bar hidden (we don't use it),
+	// so the title never gets replaced by the filter input line.
+	m.list.SetShowTitle(true)
+	m.list.SetShowFilter(false)
+	// Disable filtering entirely and reset filter state defensively to avoid replacing the title bar.
+	m.list.SetFilteringEnabled(false)
+	m.list.SetFilterState(list.Unfiltered)
 	m.list.Title = "Sneat.app - main menu"
 	return m
 }
 
-func (m menuUnassigned) Init() tea.Cmd {
+func (m menuUnsigned) Init() tea.Cmd {
 	return nil
 }
 
-func (m menuUnassigned) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m menuUnsigned) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		if msg.String() == "ctrl+c" {
+		switch msg.String() {
+		case "ctrl+c":
 			return m, tea.Quit
+		case "enter":
+			// Navigate based on the selected item by emitting app-level messages
+			if sel := m.list.SelectedItem(); sel != nil {
+				if it, ok := sel.(item); ok {
+					switch it.title {
+					case "Sign-in":
+						return m, func() tea.Msg { return navToLoginMsg{} }
+					case "About":
+						return m, func() tea.Msg { return navToAboutMsg{} }
+					}
+				}
+			}
 		}
 	case tea.WindowSizeMsg:
 		h, v := docStyle.GetFrameSize()
@@ -52,6 +83,6 @@ func (m menuUnassigned) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, cmd
 }
 
-func (m menuUnassigned) View() string {
+func (m menuUnsigned) View() string {
 	return docStyle.Render(m.list.View())
 }
