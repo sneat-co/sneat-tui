@@ -28,31 +28,6 @@ func TestInitialModel_ReturnsMenuUnassigned(t *testing.T) {
 	}
 }
 
-// containsAll is a tiny helper to check that all substrings are present.
-func containsAll(s string, subs []string) bool {
-	for _, sub := range subs {
-		if !contains(s, sub) {
-			return false
-		}
-	}
-	return true
-}
-
-func contains(s, sub string) bool {
-	return len(sub) == 0 || (len(s) >= len(sub) && (indexOf(s, sub) >= 0))
-}
-
-// Simple substring search to avoid importing strings just for Contains.
-func indexOf(s, sub string) int {
-	// naive implementation is fine for tests
-	for i := 0; i+len(sub) <= len(s); i++ {
-		if s[i:i+len(sub)] == sub {
-			return i
-		}
-	}
-	return -1
-}
-
 func TestMenuUnassigned_InitReturnsNil(t *testing.T) {
 	m := InitialModel().(menuUnassigned)
 	if cmd := m.Init(); cmd != nil {
