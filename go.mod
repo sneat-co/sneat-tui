@@ -16,7 +16,7 @@ require (
 	github.com/dal-go/record v0.1.3
 	github.com/sneat-co/calendarius/backend v0.10.1
 	github.com/sneat-co/contactus/backend v0.3.6
-	github.com/sneat-co/sneat-ai-backend v0.0.1
+	github.com/sneat-co/sneat-ai-backend v0.0.6
 	github.com/sneat-co/sneat-bots v0.30.26
 	github.com/sneat-co/sneat-core-modules v0.73.0
 	github.com/sneat-co/sneat-ext-contracts/contactus v0.12.9

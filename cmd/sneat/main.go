@@ -56,22 +56,22 @@ func main() {
 		},
 		NewSpacesReader: func(cfg config.Config) (commands.SpacesReader, error) {
 			auth := sneatauth.New(sneatauth.Options{APIKey: cfg.APIKey, AuthEmulatorHost: cfg.AuthEmulatorHost})
-			ts := tokensrc.New(context.Background(), store, auth, time.Now)
+			ts := tokensrc.FromEnvOrSession(os.Getenv, context.Background(), store, auth, time.Now)
 			return firestoredb.NewSpacesReader(cfg, ts), nil
 		},
 		NewContactsReader: func(cfg config.Config) (commands.ContactsReader, error) {
 			auth := sneatauth.New(sneatauth.Options{APIKey: cfg.APIKey, AuthEmulatorHost: cfg.AuthEmulatorHost})
-			ts := tokensrc.New(context.Background(), store, auth, time.Now)
+			ts := tokensrc.FromEnvOrSession(os.Getenv, context.Background(), store, auth, time.Now)
 			return firestoredb.NewContactsReader(cfg, ts), nil
 		},
 		NewContactWriter: func(cfg config.Config) (commands.ContactWriter, error) {
 			auth := sneatauth.New(sneatauth.Options{APIKey: cfg.APIKey, AuthEmulatorHost: cfg.AuthEmulatorHost})
-			ts := tokensrc.New(context.Background(), store, auth, time.Now)
+			ts := tokensrc.FromEnvOrSession(os.Getenv, context.Background(), store, auth, time.Now)
 			return sneatapi.New(cfg.APIBaseURL, ts, nil), nil
 		},
 		NewActionsAPI: func(cfg config.Config) (commands.ActionsAPI, error) {
 			auth := sneatauth.New(sneatauth.Options{APIKey: cfg.APIKey, AuthEmulatorHost: cfg.AuthEmulatorHost})
-			ts := tokensrc.New(context.Background(), store, auth, time.Now)
+			ts := tokensrc.FromEnvOrSession(os.Getenv, context.Background(), store, auth, time.Now)
 			return sneatapi.New(cfg.APIBaseURL, ts, nil), nil
 		},
 		IsTerminal:     func() bool { return term.IsTerminal(int(os.Stdin.Fd())) },

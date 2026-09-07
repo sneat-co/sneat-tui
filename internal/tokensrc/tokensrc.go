@@ -63,3 +63,32 @@ func (s *Source) Token() (*oauth2.Token, error) {
 	}
 	return &oauth2.Token{AccessToken: sess.IDToken, Expiry: sess.ExpiresAt}, nil
 }
+
+// StaticTokenEnv names the environment variable that, when set, replaces the
+// session-backed token with a fixed bearer token. It exists for local
+// end-to-end tests against a development server (e.g. `dev:<uid>` tokens
+// accepted by sneat-go's sneat-local-server); production tokens are never
+// passed this way.
+const StaticTokenEnv = "SNEAT_API_TOKEN"
+
+// Static is an oauth2.TokenSource that always yields the same bearer token.
+type Static struct{ token string }
+
+// NewStatic builds a Static source.
+func NewStatic(token string) *Static { return &Static{token: token} }
+
+// Token returns the fixed token.
+func (s *Static) Token() (*oauth2.Token, error) {
+	return &oauth2.Token{AccessToken: s.token}, nil
+}
+
+// FromEnvOrSession returns a Static source when getenv(StaticTokenEnv) is
+// non-empty, otherwise the session-backed Source.
+func FromEnvOrSession(getenv func(string) string, ctx context.Context, store SessionStore, auth Refresher, now func() time.Time) oauth2.TokenSource {
+	if getenv != nil {
+		if tok := getenv(StaticTokenEnv); tok != "" {
+			return NewStatic(tok)
+		}
+	}
+	return New(ctx, store, auth, now)
+}
