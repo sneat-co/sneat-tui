@@ -80,7 +80,7 @@ func TestFormatFromCmd(t *testing.T) {
 		{[]string{"--json", "--format=yaml"}, "", true},
 	}
 	for _, tc := range cases {
-		got, err := formatFromCmd(formatCmd(tc.args...))
+		got, err := formatFromCmd(formatCmd(tc.args...), fmtTable)
 		if tc.err {
 			if err == nil {
 				t.Errorf("%v: expected error", tc.args)

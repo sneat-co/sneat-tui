@@ -37,8 +37,9 @@ func addFormatFlags(cmd *cobra.Command) {
 }
 
 // formatFromCmd resolves the requested format from --format and the --<format>
-// shortcuts, defaulting to table. Conflicting or unknown values are errors.
-func formatFromCmd(cmd *cobra.Command) (outFormat, error) {
+// shortcuts, falling back to defaultFmt when none is given. Conflicting or
+// unknown values are errors.
+func formatFromCmd(cmd *cobra.Command, defaultFmt outFormat) (outFormat, error) {
 	chosen := map[string]bool{}
 	for _, name := range []string{"table", "json", "yaml", "csv"} {
 		if b, err := cmd.Flags().GetBool(name); err == nil && b {
@@ -57,17 +58,32 @@ func formatFromCmd(cmd *cobra.Command) (outFormat, error) {
 	for name := range chosen {
 		return outFormat(name), nil
 	}
-	return fmtTable, nil
+	return defaultFmt, nil
+}
+
+// outputJSONDefault renders data like output, but defaults to JSON rather
+// than table when no --format/--table/--json/--yaml/--csv flag is given.
+// It is used by the agent-facing `sneat action`/`context`/`query` families,
+// where JSON is the primary contract and a table is only ever opted into.
+func outputJSONDefault(cmd *cobra.Command, data any, headers []string, rows [][]string) error {
+	f, err := formatFromCmd(cmd, fmtJSON)
+	if err != nil {
+		return err
+	}
+	return renderOutput(cmd.OutOrStdout(), f, data, headers, rows)
 }
 
 // output renders data in the command's chosen format. data feeds json/yaml;
 // headers+rows feed the table and csv renderers.
 func output(cmd *cobra.Command, data any, headers []string, rows [][]string) error {
-	f, err := formatFromCmd(cmd)
+	f, err := formatFromCmd(cmd, fmtTable)
 	if err != nil {
 		return err
 	}
-	w := cmd.OutOrStdout()
+	return renderOutput(cmd.OutOrStdout(), f, data, headers, rows)
+}
+
+func renderOutput(w io.Writer, f outFormat, data any, headers []string, rows [][]string) error {
 	switch f {
 	case fmtJSON:
 		return writeJSON(w, data)

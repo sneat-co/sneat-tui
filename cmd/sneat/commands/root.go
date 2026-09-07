@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/sneat-co/sneat-ai-backend/actionspec"
+	"github.com/sneat-co/sneat-ai-backend/dto4sneatai"
 	"github.com/sneat-co/sneat-cli/internal/browserauth"
 	"github.com/sneat-co/sneat-cli/internal/config"
 	"github.com/sneat-co/sneat-cli/internal/session"
@@ -39,6 +41,9 @@ type Env struct {
 	NewSpacesReader   func(cfg config.Config) (SpacesReader, error)
 	NewContactsReader func(cfg config.Config) (ContactsReader, error)
 	NewContactWriter  func(cfg config.Config) (ContactWriter, error)
+	// NewActionsAPI builds the client for the `sneat action`/`context`/`query`
+	// command families (Action Protocol, sneat-ai-backend's `/v0/sneatai/*`).
+	NewActionsAPI func(cfg config.Config) (ActionsAPI, error)
 	// IsTerminal reports whether interactive prompts are possible (stdin is a TTY).
 	IsTerminal func() bool
 	// RunContactForm collects contact fields interactively.
@@ -54,6 +59,22 @@ type Env struct {
 // the contact write path that the interactive UI needs.
 type ContactDeleter interface {
 	DeleteContact(ctx context.Context, spaceID, contactID string) error
+}
+
+// ActionsAPI is the Action Protocol HTTP surface the `sneat action`,
+// `sneat context` and `sneat query` command families call. It is the
+// commands package's view of internal/sneatapi.Client (a subset interface so
+// commands stay unit-testable against a fake).
+type ActionsAPI interface {
+	ActionCreate(ctx context.Context, req dto4sneatai.CreateActionRequest) (dto4sneatai.ActionResponse, error)
+	ActionPatch(ctx context.Context, req dto4sneatai.PatchActionRequest) (dto4sneatai.ActionResponse, error)
+	ActionGet(ctx context.Context, spaceID, actionID string) (dto4sneatai.ActionResponse, error)
+	ActionValidate(ctx context.Context, req dto4sneatai.ValidateActionRequest) (dto4sneatai.ActionResponse, error)
+	ActionCommit(ctx context.Context, req dto4sneatai.CommitActionRequest) (dto4sneatai.CommitActionResponse, error)
+	ActionCancel(ctx context.Context, req dto4sneatai.ActionRequest) error
+	Context(ctx context.Context, spaceID string) (dto4sneatai.ContextResponse, error)
+	Query(ctx context.Context, req dto4sneatai.QueryRequest) (dto4sneatai.QueryResponse, error)
+	Schema(ctx context.Context) (actionspec.Schema, error)
 }
 
 // Root builds the top-level `sneat` command.
