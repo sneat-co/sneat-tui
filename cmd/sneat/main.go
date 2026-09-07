@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"time"
@@ -68,6 +69,11 @@ func main() {
 			ts := tokensrc.New(context.Background(), store, auth, time.Now)
 			return sneatapi.New(cfg.APIBaseURL, ts, nil), nil
 		},
+		NewActionsAPI: func(cfg config.Config) (commands.ActionsAPI, error) {
+			auth := sneatauth.New(sneatauth.Options{APIKey: cfg.APIKey, AuthEmulatorHost: cfg.AuthEmulatorHost})
+			ts := tokensrc.New(context.Background(), store, auth, time.Now)
+			return sneatapi.New(cfg.APIBaseURL, ts, nil), nil
+		},
 		IsTerminal:     func() bool { return term.IsTerminal(int(os.Stdin.Fd())) },
 		RunContactForm: commands.RunContactForm,
 		RunTUI: func(spaces commands.SpacesReader, contacts commands.ContactsReader, deleter commands.ContactDeleter, uid string) error {
@@ -102,10 +108,18 @@ func main() {
 		commands.Contact(env),
 		commands.Contacts(env),
 		commands.Convo(env),
+		commands.Action(env),
+		commands.Context(env),
+		commands.Query(env),
 	)
 	if err := root.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, "sneat:", err)
-		os.Exit(1)
+		code := 1
+		var exitErr *commands.ExitCodeError
+		if errors.As(err, &exitErr) {
+			code = exitErr.Code
+		}
+		os.Exit(code)
 	}
 }
 

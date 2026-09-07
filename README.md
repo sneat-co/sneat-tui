@@ -16,6 +16,28 @@ Or build from source with Go:
 go install github.com/sneat-co/sneat-cli/cmd/sneat@latest
 ```
 
+## Commands
+
+Human-facing commands (`auth`, `space`/`spaces`, `contact`/`contacts`, `chat`, `ui`, `convo`) work
+against Firestore directly or the sneat-go API and print a table by default (`--format json|yaml|csv`
+to switch). The Action Protocol family below is agent-facing: every command prints JSON by default,
+talks to `api.sneat.cloud/v0/sneatai/*` (see
+[sneat-ai-backend](https://github.com/sneat-co/sneat-ai-backend)), and holds a pending action as a
+local draft file (`<UserConfigDir>/sneat/actions/<actionID>.json`) unless `--server` is given.
+
+| Command | Flags | Does |
+|---|---|---|
+| `sneat action new` | `--json`, `--utterance`, `--language`, `--space`, `--server` | Start an action from a semantic candidate; validates it (client-held) or creates it on the server (`--server`) |
+| `sneat action add <id>` | `--json`, `--utterance`, `--language` | Apply a semantic patch — merged locally and re-validated for a client-held draft, sent to `action_patch` for a server-held one |
+| `sneat action show <id>` | — | Print the local draft, or fetch a server-held action |
+| `sneat action validate <id>` | — | Re-run validation without changing the semantic candidate |
+| `sneat action commit <id>` | — | Commit the action; exits 2 with `{"error": "..."}` on stdout when the server refuses because validation still needs input |
+| `sneat action cancel <id>` | — | Cancel the action (deletes the local draft, or calls `action_cancel`) |
+| `sneat action list` | — | List local action drafts (client-held and server-held index entries) |
+| `sneat action schema` | `--offline` | Print the Action Protocol's machine-readable semantic schema (fetched by default, or compiled-in with `--offline`) |
+| `sneat context` | `--space` | Print a Space snapshot (contacts, lists, happenings, now/today) for an agent to read before acting |
+| `sneat query` | `--json`, `--space` | Ask what to buy/schedule for contacts before a horizon |
+
 <!-- dev-approach:v1 -->
 ## Our approach to development
 
