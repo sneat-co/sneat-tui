@@ -8,7 +8,7 @@ require (
 	charm.land/huh/v2 v2.0.3
 	charm.land/lipgloss/v2 v2.0.6
 	cloud.google.com/go/firestore v1.25.0
-	github.com/bots-go-framework/bots-go-core v0.3.2
+	github.com/bots-go-framework/bots-go-core v0.3.3
 	github.com/charmbracelet/x/ansi v0.11.8
 	github.com/dal-go/dalgo v0.79.4
 	github.com/dal-go/dalgo2firestore v0.10.17
@@ -22,7 +22,7 @@ require (
 	github.com/sneat-co/sneat-go-core v0.68.0
 	github.com/sneat-co/sneat-go-core/convospec v0.1.2
 	github.com/spf13/cobra v1.10.2
-	github.com/strongo/buildinfo v0.2.0
+	github.com/strongo/buildinfo v0.2.1
 	github.com/strongo/strongoapp v0.31.58
 	golang.org/x/oauth2 v0.36.0
 	golang.org/x/term v0.45.0

@@ -42,6 +42,8 @@ github.com/bots-go-framework/bots-fw-store v0.14.1 h1:uo+jEI16A/7oiZzxPdom0q1fXX
 github.com/bots-go-framework/bots-fw-store v0.14.1/go.mod h1:0yS6Pg516jHIrIInv+kvWRWxXNGGqR4tlvRua8GfT20=
 github.com/bots-go-framework/bots-go-core v0.3.2 h1:QzugMQGvARBVL72dPJYazS8peBny40XtM8MvNKDy4WE=
 github.com/bots-go-framework/bots-go-core v0.3.2/go.mod h1:Q06HjfraLL7Dih3sjVukLXk64W2zzH0791fpU92z59M=
+github.com/bots-go-framework/bots-go-core v0.3.3 h1:OUvC8NcqEFH1RpMTAAWmtkkuiL+tG3/Ddk9ZSs9QssI=
+github.com/bots-go-framework/bots-go-core v0.3.3/go.mod h1:kBdKbG7avpQa6MX4zgO0mFhzzngyGWzCbEOnZv96LKE=
 github.com/buger/jsonparser v1.6.1 h1:I0phFv0PlbLHnM7TZAVjZ2MJ2/eWRTDyuO7GLR98IEs=
 github.com/buger/jsonparser v1.6.1/go.mod h1:6RYKKt7H4d4+iWqouImQ9R2FZql3VbhNgx27UK13J/0=
 github.com/catppuccin/go v0.3.0 h1:d+0/YicIq+hSTo5oPuRi5kOpqkVA5tAsU6dNhvRu+aY=
@@ -221,6 +223,8 @@ github.com/strongo/analytics v0.2.8 h1:h0snZrFba1DDI7H/RcePbq3V8MeuOrZFC8kj5ZJkp
 github.com/strongo/analytics v0.2.8/go.mod h1:/pf7goR1CZtkvZHrJH5sXpJJl6IAefWCx82eSGUZ2V0=
 github.com/strongo/buildinfo v0.2.0 h1:4lVoCUfUbwJN8EbqFNQ1oYdBnjKrKRx6FlLVrTPSleI=
 github.com/strongo/buildinfo v0.2.0/go.mod h1:JpxZ3Jku81LJC1RNIqCNYwguDzLk90eemxUXx4JnSlA=
+github.com/strongo/buildinfo v0.2.1 h1:z6H2UJYT8hAgzCUnNIjOCEAWmNnvj3KZdYXIw5dZngs=
+github.com/strongo/buildinfo v0.2.1/go.mod h1:JpxZ3Jku81LJC1RNIqCNYwguDzLk90eemxUXx4JnSlA=
 github.com/strongo/decimal v0.1.2 h1:/LHdX9zJTUPpEM2cuQhnwCWNWLCUwG0BJMyOetpryY8=
 github.com/strongo/decimal v0.1.2/go.mod h1:uKFgetJbR2uT026stdbK54ELXTH9h0vZOPPOp7DAODk=
 github.com/strongo/delaying v0.2.3 h1:hoocochAXXaP7nfw9JpFSOBc60yB9euJmpqQuDsqpAU=
