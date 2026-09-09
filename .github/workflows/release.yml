@@ -40,10 +40,21 @@ jobs:
     # macos_signing_preflight job, gated exactly on this input. Bump this
     # pin deliberately, and re-verify the preflight job is still wired,
     # rather than tracking `@v1`.
-    uses: strongo/cicd/.github/workflows/release.yml@v1.15.0
+    uses: strongo/cicd/.github/workflows/release.yml@v1.18.0
     permissions:
       contents: write
+      # Lets the require_workflow_success guard read the quality
+      # workflow's result for this commit. A reusable workflow cannot
+      # grant itself more than its caller allows, so it belongs here.
+      actions: read
     with:
+      # Refuse to tag or publish unless this repo's quality workflow
+      # passed for this exact commit. Release and that workflow are
+      # siblings started by the same push, with no cross-workflow
+      # `needs:` between them, so before this a red suite could not
+      # stop a release. datatug-cli shipped v0.13.2 that way. Names
+      # the workflow's `name:`, not its filename.
+      require_workflow_success: 'Go CI'
       go_version: '1.27.0'
       # sneat-cli imports several private sneat-co Go modules (sneat-bots,
       # sneat-core-modules, calendarius/backend, contactus/backend, ...).
