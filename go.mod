@@ -10,23 +10,23 @@ require (
 	cloud.google.com/go/firestore v1.25.0
 	github.com/bots-go-framework/bots-go-core v0.3.3
 	github.com/charmbracelet/x/ansi v0.11.8
-	github.com/dal-go/dalgo v0.79.4
-	github.com/dal-go/dalgo2firestore v0.10.17
+	github.com/dal-go/dalgo v0.80.1
+	github.com/dal-go/dalgo2firestore v0.10.20
 	github.com/dal-go/dalgo2openvaultdb v0.3.1
 	github.com/dal-go/record v0.1.3
-	github.com/sneat-co/calendarius/backend v0.10.1
-	github.com/sneat-co/contactus/backend v0.3.6
-	github.com/sneat-co/sneat-ai-backend v0.0.6
-	github.com/sneat-co/sneat-bots v0.30.26
-	github.com/sneat-co/sneat-core-modules v0.73.0
-	github.com/sneat-co/sneat-ext-contracts/contactus v0.12.9
-	github.com/sneat-co/sneat-go-core v0.69.0
+	github.com/sneat-co/calendarius/backend v0.11.0
+	github.com/sneat-co/contactus/backend v0.5.0
+	github.com/sneat-co/sneat-ai-backend v0.10.1
+	github.com/sneat-co/sneat-bots v0.30.30
+	github.com/sneat-co/sneat-core-modules v0.75.6
+	github.com/sneat-co/sneat-ext-contracts/contactus v0.12.10
+	github.com/sneat-co/sneat-go-core v0.70.3
 	github.com/sneat-co/sneat-go-core/convospec v0.1.2
 	github.com/spf13/cobra v1.10.2
 	github.com/strongo/buildinfo v0.2.1
-	github.com/strongo/strongoapp v0.31.58
-	golang.org/x/oauth2 v0.36.0
-	golang.org/x/term v0.45.0
+	github.com/strongo/strongoapp v0.31.59
+	golang.org/x/oauth2 v0.37.0
+	golang.org/x/term v0.46.0
 	google.golang.org/api v0.297.0
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -78,18 +78,19 @@ require (
 	github.com/sneat-co/assetus/backend v0.8.2 // indirect
 	github.com/sneat-co/commitius/backend v0.8.0 // indirect
 	github.com/sneat-co/listus/backend v0.1.14 // indirect
-	github.com/sneat-co/sneat-ext-contracts/calendarius v0.27.6 // indirect
-	github.com/sneat-co/sneat-ext-contracts/listus v0.0.6 // indirect
+	github.com/sneat-co/sneat-ext-contracts/calendarius v0.27.8 // indirect
+	github.com/sneat-co/sneat-ext-contracts/listus v0.0.10 // indirect
+	github.com/sneat-co/sneat-ext-contracts/media v0.1.1 // indirect
 	github.com/sneat-co/sneat-ext-contracts/trackus v0.1.1 // indirect
-	github.com/sneat-co/sneat-translations v0.10.5 // indirect
+	github.com/sneat-co/sneat-translations v0.10.6 // indirect
 	github.com/sneat-co/trackus/backend v0.1.7 // indirect
 	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/standard-webhooks/standard-webhooks/libraries v0.0.1 // indirect
 	github.com/strongo/analytics v0.2.8 // indirect
 	github.com/strongo/decimal v0.1.2 // indirect
 	github.com/strongo/delaying v0.2.6 // indirect
-	github.com/strongo/i18n v0.8.20 // indirect
-	github.com/strongo/logus v0.4.3 // indirect
+	github.com/strongo/i18n v0.8.21 // indirect
+	github.com/strongo/logus v0.4.4 // indirect
 	github.com/strongo/random v0.0.2 // indirect
 	github.com/strongo/slice v0.3.10 // indirect
 	github.com/strongo/validation v0.0.13 // indirect
@@ -105,11 +106,11 @@ require (
 	go.opentelemetry.io/otel/metric v1.45.0 // indirect
 	go.opentelemetry.io/otel/trace v1.45.0 // indirect
 	go.yaml.in/yaml/v4 v4.0.0-rc.6 // indirect
-	golang.org/x/crypto v0.56.0 // indirect
+	golang.org/x/crypto v0.57.0 // indirect
 	golang.org/x/net v0.58.0 // indirect
-	golang.org/x/sync v0.22.0 // indirect
-	golang.org/x/sys v0.47.0 // indirect
-	golang.org/x/text v0.41.0 // indirect
+	golang.org/x/sync v0.23.0 // indirect
+	golang.org/x/sys v0.48.0 // indirect
+	golang.org/x/text v0.42.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
 	google.golang.org/genproto v0.0.0-20260803160001-6ac0973c030d // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260803160001-6ac0973c030d // indirect
